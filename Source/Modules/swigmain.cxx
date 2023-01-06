@@ -44,6 +44,7 @@ extern "C" {
   Language *swig_scilab(void);
   Language *swig_tcl(void);
   Language *swig_xml(void);
+  Language *swig_modula3(void);
 }
 
 /* Association of command line options to language modules.
@@ -62,7 +63,7 @@ static TargetLanguageModule modules[] = {
   {"-java", swig_java, "Java", Supported},
   {"-javascript", swig_javascript, "Javascript", Supported},
   {"-lua", swig_lua, "Lua", Supported},
-  {"-modula3", NULL, "Modula 3", Disabled},
+  {"-modula3", swig_modula3, "Modula 3", Supported},
   {"-mzscheme", swig_mzscheme, "MzScheme/Racket", Experimental},
   {"-ocaml", swig_ocaml, "OCaml", Experimental},
   {"-octave", swig_octave, "Octave", Supported},
