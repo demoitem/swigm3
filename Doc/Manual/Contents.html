@@ -359,6 +359,7 @@
 <li><a href="CPlusPlus14.html#CPlusPlus14_core_language_changes">Core language changes</a>
 <ul>
 <li><a href="CPlusPlus14.html#CPlusPlus14_binary_literals">Binary integer literals</a>
+<li><a href="CPlusPlus14.html#CPlusPlus14_return_type_deduction">Return type deduction</a>
 </ul>
 <li><a href="CPlusPlus14.html#CPlusPlus14_standard_library_changes">Standard library changes</a>
 </ul>
@@ -392,6 +393,7 @@
 <ul>
 <li><a href="CPlusPlus20.html#CPlusPlus20_spaceship_operator">Spaceship operator</a>
 <li><a href="CPlusPlus20.html#CPlusPlus20_lambda_templates">Lambda templates</a>
+<li><a href="CPlusPlus20.html#CPlusPlus20_constexpr_destructors">Constexpr destructors</a>
 </ul>
 <li><a href="CPlusPlus20.html#CPlusPlus20_standard_library_changes">Standard library changes</a>
 </ul>
@@ -445,6 +447,7 @@
 <li><a href="Library.html#Library_stl_cpp_library">STL/C++ library</a>
 <ul>
 <li><a href="Library.html#Library_std_string">std::string</a>
+<li><a href="Library.html#Library_std_string_view">std::string_view</a>
 <li><a href="Library.html#Library_std_vector">std::vector</a>
 <li><a href="Library.html#Library_stl_exceptions">STL exceptions</a>
 <li><a href="Library.html#Library_std_shared_ptr">shared_ptr smart pointer</a>
@@ -795,7 +798,12 @@
 <li><a href="CSharp.html#CSharp_commandline">Additional command line options</a>
 </ul>
 <li><a href="CSharp.html#CSharp_differences_java">Differences to the Java module</a>
+<li><a href="CSharp.html#CSharp_type_mapping">Type mapping</a>
+<ul>
+<li><a href="CSharp.html#CSharp_primitive_types">Primitive types</a>
+<li><a href="CSharp.html#CSharp_other_type_mappings">Other types</a>
 <li><a href="CSharp.html#CSharp_void_pointers">Void pointers</a>
+</ul>
 <li><a href="CSharp.html#CSharp_arrays">C# Arrays</a>
 <ul>
 <li><a href="CSharp.html#CSharp_arrays_swig_library">The SWIG C arrays library</a>
@@ -816,6 +824,7 @@
 <li><a href="CSharp.html#CSharp_director_caveats">Director caveats</a>
 </ul>
 <li><a href="CSharp.html#CSharp_multiple_modules">Multiple modules</a>
+<li><a href="CSharp.html#CSharp_named_arguments">C# named and optional arguments</a>
 <li><a href="CSharp.html#CSharp_typemap_examples">C# Typemap examples</a>
 <ul>
 <li><a href="CSharp.html#CSharp_memory_management_member_variables">Memory management when returning references to member variables</a>
@@ -849,7 +858,11 @@
 <li><a href="D.html#D_code_injection_typemaps">Code injection typemaps</a>
 <li><a href="D.html#D_special_variables">Special variable macros</a>
 </ul>
+<li><a href="D.html#D_other_code_control">Other D code control features</a>
+<ul>
+<li><a href="D.html#D_module">D begin</a>
 <li><a href="D.html#D_features">D and %feature</a>
+</ul>
 <li><a href="D.html#D_pragmas">Pragmas</a>
 <li><a href="D.html#D_exceptions">D Exceptions</a>
 <li><a href="D.html#D_directors">D Directors</a>
@@ -1049,6 +1062,7 @@
 <li><a href="Java.html#Java_proxycode">Class extension with %proxycode</a>
 <li><a href="Java.html#Java_exception_handling">Exception handling with %exception and %javaexception</a>
 <li><a href="Java.html#Java_method_access">Method access with %javamethodmodifiers</a>
+<li><a href="Java.html#Java_begin">Java begin</a>
 </ul>
 <li><a href="Java.html#Java_tips_techniques">Tips and techniques</a>
 <ul>
@@ -1118,6 +1132,7 @@
 <ul>
 <li><a href="Javascript.html#Javascript_node_extensions">Creating node.js Extensions</a>
 <ul>
+<li><a href="Javascript.html#Javascript_using_yeoman">Using <code>yeoman</code> to generate a Node-API skeleton</a>
 <li><a href="Javascript.html#Javascript_troubleshooting">Troubleshooting</a>
 </ul>
 <li><a href="Javascript.html#Javascript_embedded_webkit">Embedded Webkit</a>
@@ -1139,6 +1154,7 @@
 <li><a href="Javascript.html#Javascript_emitter">Emitter</a>
 <li><a href="Javascript.html#Javascript_emitter_states">Emitter states</a>
 <li><a href="Javascript.html#Javascript_jsc_exceptions">Handling Exceptions in JavascriptCore</a>
+<li><a href="Javascript.html#Javascript_napi_exceptions">Handling Exceptions in Node-API</a>
 </ul>
 </ul>
 </div>
@@ -1429,6 +1445,7 @@
 <li><a href="Python.html#Python_nn37">Overhead and code bloat</a>
 <li><a href="Python.html#Python_nn38">Typemaps</a>
 <li><a href="Python.html#Python_nn39">Miscellaneous</a>
+<li><a href="Python.html#Python_stable_abi">Stable ABI</a>
 </ul>
 <li><a href="Python.html#Python_nn40">Common customization features</a>
 <ul>
@@ -1458,7 +1475,7 @@
 </ul>
 <li><a href="Python.html#Python_nn58">Typemap Examples</a>
 <ul>
-<li><a href="Python.html#Python_nn59">Converting  Python list to a char ** </a>
+<li><a href="Python.html#Python_nn59">Converting a Python list to a char ** </a>
 <li><a href="Python.html#Python_nn60">Expanding a Python object into multiple arguments</a>
 <li><a href="Python.html#Python_nn61">Using typemaps to return arguments</a>
 <li><a href="Python.html#Python_nn62">Mapping Python tuples into small arrays</a>
@@ -1736,6 +1753,7 @@
 <ul>
 <li><a href="Scilab.html#Scilab_generated_scripts_builder_script">Builder script</a>
 <li><a href="Scilab.html#Scilab_generated_scripts_loader_script">Loader script</a>
+<li><a href="Scilab.html#Scilab_generated_scripts_gateway">Gateway XML files</a>
 </ul>
 <li><a href="Scilab.html#Scilab_other_resources">Other resources</a>
 </ul>

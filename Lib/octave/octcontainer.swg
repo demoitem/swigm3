@@ -102,7 +102,7 @@ namespace swig {
 
   template <class Sequence, class Difference>
   inline typename Sequence::iterator
-  getpos(Sequence* self, Difference i)  {
+  getpos(Sequence* self, Difference i) {
     typename Sequence::iterator pos = self->begin();
     std::advance(pos, check_index(i,self->size()));
     return pos;
@@ -110,7 +110,7 @@ namespace swig {
 
   template <class Sequence, class Difference>
   inline typename Sequence::const_iterator
-  cgetpos(const Sequence* self, Difference i)  {
+  cgetpos(const Sequence* self, Difference i) {
     typename Sequence::const_iterator pos = self->begin();
     std::advance(pos, check_index(i,self->size()));
     return pos;
@@ -198,7 +198,7 @@ namespace swig
 	return swig::as<T>(item);
       } catch (const std::exception& e) {
 	char msg[1024];
-	sprintf(msg, "in sequence element %d ", _index);
+	SWIG_snprintf(msg, sizeof(msg), "in sequence element %d ", _index);
 	if (!Octave_Error_Occurred()) {
 	  %type_error(swig::type_name<T>());
 	}

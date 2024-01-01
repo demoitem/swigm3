@@ -18,7 +18,6 @@ static const char *usage = "\
 Ocaml Options (available with -ocaml)\n\
      -oldvarnames    - Old intermediary method names for variable wrappers\n\
      -prefix <name>  - Set a prefix <name> to be prepended to all names\n\
-     -suffix <name>  - Deprecated alias for general option -cppext\n\
      -where          - Emit library location\n\
 \n";
 
@@ -69,7 +68,7 @@ public:
 	   "if ( $comparison ) { /* subclassed */\n",
 	   "  $director_new \n", "} else {\n", "  caml_failwith(\"accessing abstract class or protected constructor\"); \n", "}\n", NIL);
     director_multiple_inheritance = 1;
-    director_language = 1;
+    directorLanguage();
   }
  
   String *Swig_class_name(Node *n) {
@@ -111,15 +110,6 @@ public:
 	  } else {
 	    Swig_arg_error();
 	  }
-	} else if (strcmp(argv[i], "-suffix") == 0) {
-	  if (argv[i + 1]) {
-	    Printf(stderr, "swig: warning: -suffix option deprecated.  SWIG 3.0.4 and later provide a -cppext option which should be used instead.\n");
-	    SWIG_config_cppext(argv[i + 1]);
-	    Swig_mark_arg(i);
-	    Swig_mark_arg(i + 1);
-	    i++;
-	  } else
-	    Swig_arg_error();
 	} else if (strcmp(argv[i], "-oldvarnames") == 0) {
 	  Swig_mark_arg(i);
 	  old_variable_names = true;
@@ -291,7 +281,7 @@ public:
 
     Printf(f_int_to_enum, "let int_to_enum x y =\n" "    match (x : c_enum_type) with\n" "      `unknown -> C_enum (`Int y)\n");
 
-    if (directorsEnabled()) {
+    if (Swig_directors_enabled()) {
       Printf(f_runtime, "#define SWIG_DIRECTORS\n");
     }
 
@@ -340,7 +330,7 @@ public:
     Printf(f_enumtypes_type, "]\n");
     Printf(f_enumtypes_value, "]\n\n" "type c_obj = c_enum_value c_obj_t\n");
 
-    if (directorsEnabled()) {
+    if (Swig_directors_enabled()) {
       // Insert director runtime into the f_runtime file (make it occur before %header section)
       Swig_insert_file("director_common.swg", f_runtime);
       Swig_insert_file("director.swg", f_runtime);
@@ -829,7 +819,8 @@ public:
     Wrapper_add_local(f, "swig_result", "SWIG_CAMLlocal1(swig_result)");
     Printf(f->code, "swig_result = Val_unit;\n");
 
-    if (!GetFlag(n, "feature:immutable")) {
+    int assignable = !is_immutable(n);
+    if (assignable) {
       /* Check for a setting of the variable value */
       Printf(f->code, "if (args != Val_int(0)) {\n");
       if ((tm = Swig_typemap_lookup("varin", n, name, 0))) {
@@ -863,7 +854,7 @@ public:
 
     // Now add symbol to the Ocaml interpreter
 
-    if (GetFlag(n, "feature:immutable")) {
+    if (!assignable) {
       Printf(f_mlbody, "external _%s : c_obj -> Swig.c_obj = \"%s\" \n", mname, var_name);
       Printf(f_mlibody, "val _%s : c_obj -> Swig.c_obj\n", iname);
       if (const_enum) {
@@ -1492,11 +1483,6 @@ public:
 
       /* build argument list and type conversion string */
       for (i = 0, idx = 0, p = l; i < num_arguments; i++) {
-
-	while (Getattr(p, "tmap:ignore")) {
-	  p = Getattr(p, "tmap:ignore:next");
-	}
-
 	String *pname = Getattr(p, "name");
 	String *ptype = Getattr(p, "type");
 

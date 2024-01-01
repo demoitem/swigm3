@@ -1,6 +1,6 @@
-/* ------------------------------------------------------------
+/* -------------------------------------------------------------
  * SWIG library containing argc and argv multi-argument typemaps
- * ------------------------------------------------------------ */
+ * ------------------------------------------------------------- */
 
 %typemap(in) (int ARGC, char **ARGV) {
   int i, nitems;
@@ -12,7 +12,7 @@
   $1 = ($1_ltype) nitems;
   $2 = (char **) malloc((nitems+1)*sizeof(char *));
   for (i = 0; i < nitems; i++) {
-    $2[i] = Tcl_GetStringFromObj(listobjv[i], NULL);
+    $2[i] = Tcl_GetString(listobjv[i]);
   }
   $2[i] = NULL;
 }
@@ -23,7 +23,5 @@
 }
 
 %typemap(freearg) (int ARGC, char **ARGV) {
-  if ($2 != NULL) {
-    free((void *)$2);
-  }
+  free((void *)$2);
 }

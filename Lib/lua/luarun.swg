@@ -87,7 +87,7 @@ typedef struct swig_elua_entry {
 #endif
 
 #if (SWIG_LUA_TARGET == SWIG_LUA_FLAVOR_ELUA) || (SWIG_LUA_TARGET == SWIG_LUA_FLAVOR_ELUAC)
-#  define SWIG_LUA_CONSTTAB_INT(B, C...) LSTRKEY(B), LNUMVAL(C)
+#  define SWIG_LUA_CONSTTAB_INT(B, C) LSTRKEY(B), LNUMVAL(C)
 #  define SWIG_LUA_CONSTTAB_FLOAT(B, C) LSTRKEY(B), LNUMVAL(C)
 #  define SWIG_LUA_CONSTTAB_STRING(B, C) LSTRKEY(B), LSTRVAL(C)
 #  define SWIG_LUA_CONSTTAB_CHAR(B, C) LSTRKEY(B), LNUMVAL(C)
@@ -103,7 +103,7 @@ typedef struct swig_elua_entry {
 #define SWIG_LUA_CONSTTAB_BINARY(B, S, C, D) LSTRKEY(B), LNILVAL
 #endif
 #else /* SWIG_LUA_FLAVOR_LUA */
-#  define SWIG_LUA_CONSTTAB_INT(B, C...) SWIG_LUA_INT, (char *)B, (long)C, 0, 0, 0
+#  define SWIG_LUA_CONSTTAB_INT(B, C) SWIG_LUA_INT, (char *)B, (long)C, 0, 0, 0
 #  define SWIG_LUA_CONSTTAB_FLOAT(B, C) SWIG_LUA_FLOAT, (char *)B, 0, (double)C, 0, 0
 #  define SWIG_LUA_CONSTTAB_STRING(B, C) SWIG_LUA_STRING, (char *)B, 0, 0, (void *)C, 0
 #  define SWIG_LUA_CONSTTAB_CHAR(B, C) SWIG_LUA_CHAR, (char *)B, (long)C, 0, 0, 0
@@ -147,6 +147,20 @@ typedef struct swig_elua_entry {
 # define lua_rawlen lua_strlen
 #elif LUA_VERSION_NUM == 501
 # define lua_rawlen lua_objlen
+#endif
+
+/* lua_tolstring() was added in Lua 5.1.  It should be a little more
+   efficient than making two separate calls and it avoids problems with order
+   of evaluation so SWIG calls lua_tolstring() when it wants the length and
+   we provide a compatibility implementation for Lua 5.0.  */
+#if !defined(LUA_VERSION_NUM) || LUA_VERSION_NUM < 501
+static const char *(lua_tolstring)(lua_State *L, int idx, size_t *len) {
+  /* Call lua_tostring() first as it may convert the value from number to
+     string. */
+  const char *result = lua_tostring(L, idx);
+  if (len) *len = lua_strlen(L, idx);
+  return result;
+}
 #endif
 
 

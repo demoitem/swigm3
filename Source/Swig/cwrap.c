@@ -296,7 +296,7 @@ int Swig_cargs(Wrapper *w, ParmList *p) {
 	  Delete(defname);
 	  Delete(defvalue);
 	}
-      } else if (!pvalue && ((tycode == T_POINTER) || (tycode == T_STRING) || (tycode == T_WSTRING))) {
+      } else if (!pvalue && ((tycode == T_POINTER) || (tycode == T_STRING) || (tycode == T_WSTRING) || (tycode == T_ARRAY))) {
 	pvalue = (String *) "0";
       }
       if (!altty) {
@@ -893,7 +893,7 @@ static String *extension_code(Node *n, const String *function_name, ParmList *pa
   String *rt_sig = SwigType_str(return_type, sig);
   String *body = NewStringf("SWIGINTERN %s", rt_sig);
   Printv(body, code, "\n", NIL);
-  if (Strstr(body, "$")) {
+  if (Strchr(body, '$')) {
     Swig_replace_special_variables(n, parentNode(parentNode(n)), body);
     if (self)
       Replaceall(body, "$self", self);
@@ -1172,8 +1172,7 @@ int Swig_MethodToFunction(Node *n, const_String_or_char_ptr nspace, String *clas
  * ----------------------------------------------------------------------------- */
 
 Node *Swig_methodclass(Node *n) {
-  Node *nodetype = nodeType(n);
-  if (Cmp(nodetype, "class") == 0)
+  if (Equal(nodeType(n), "class"))
     return n;
   return GetFlag(n, "feature:extend") ? parentNode(parentNode(n)) : parentNode(n);
 }
